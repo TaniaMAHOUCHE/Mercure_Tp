@@ -1,4 +1,4 @@
-FROM php:8.1.5-fpm-alpine3.15
+FROM php:8.1.5-fpm-alpine
 
 RUN apk update \
     && apk --no-cache add $PHPIZE_DEPS openssl-dev nginx bash git nano icu-dev libzip-dev apk-cron libxml2-dev oniguruma-dev libpng-dev libxslt-dev \
