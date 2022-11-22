@@ -24,7 +24,7 @@ services:
             - "1234:80"
         volumes:
             - ./conf/site.conf:/etc/nginx/http.d/default.conf
-            - ./back:/var/www/html
+            - ./back/app:/var/www/html
 
     db:
         image: mariadb:10.8.2
