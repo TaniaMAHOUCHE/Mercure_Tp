@@ -35,6 +35,18 @@ services:
         environment:
             MYSQL_ROOT_PASSWORD: 'ChangeMeLater'
 
+    phpmyadmin:
+        image: phpmyadmin
+        container_name: phpmyadmin_docker
+        restart: always
+        depends_on:
+            - db
+        ports:
+            - "8080:80"
+        environment:
+            - PMA_HOST=db
+            - PMA_PASSWORD=ChangeMeLater
+
     caddy:
         image: dunglas/mercure
         restart: unless-stopped
