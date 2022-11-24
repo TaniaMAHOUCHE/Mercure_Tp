@@ -4,22 +4,22 @@ import axios from 'axios';
 
 
 export const Loginn = () => {
-    const [email, setEmail] = useState('');
-    const [pass, setPass] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
 
     // const handleSubmit = (e) => {
     //     e.preventDefault();
-    //     console.log(email);
+    //     console.log(username);
     // }
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(email);
+        console.log(username);
         const formData = new FormData();
-        formData.append("email", email)
-        formData.append("pass", pass)
+        formData.append("username", username)
+        formData.append("password", password)
       
            await axios({
-              url: "http://localhost:1234/user/login",
+              url: "http://localhost:1234/login",
               method: "POST",
               headers: {
                   'Content-Type' : 'application/json' ,
@@ -50,10 +50,10 @@ export const Loginn = () => {
         <div className="auth-form-container">
             <h2>Login</h2>
             <form className="login-form" onSubmit={handleSubmit}>
-                <label htmlFor="email">email</label>
-                <input value={email} onChange={(e) => setEmail(e.target.value)}type="email" placeholder="email..." id="email" name="email" />
+                <label htmlFor="username">username</label>
+                <input value={username} onChange={(e) => setUsername(e.target.value)}type="text" placeholder="username..." id="username" name="username" />
                 <label htmlFor="password">password</label>
-                <input value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="password..." id="password" name="password" />
+                <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="password..." id="password" name="password" />
                 <button type="submit">Log In</button>
             </form>
             {/* <button className="link-btn" onClick={() => props.onFormSwitch('register')}>Don't have an account? Register here.</button> */}

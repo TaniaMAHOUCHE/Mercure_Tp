@@ -12,6 +12,7 @@ use App\Entity\User;
 use App\Repository\ChatRepository;
 use App\Service\TopicHelper;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class ChatController extends AbstractController
 {
@@ -20,6 +21,7 @@ class ChatController extends AbstractController
     public function getChatMessages(ChatRepository $chatRepository,
     Request $request, TopicHelper $topicHelper, string $topic): JsonResponse
     {
+        $user = $this->getUser();
 
         if (!$topicHelper->isUserInThisTopic($user->getId(), $topic)) {
             return $this->json([
@@ -31,11 +33,8 @@ class ChatController extends AbstractController
         return $this->json(['chat' => $chatRepository->getAllMessagesOrderByDate($topic)], 200, [], ['groups' => ['main']]);
     }
 
-    /**
-     * @Route (path="/chat/post-message", name="chat_postMessages", methods="POST")
-     * @return JsonResponse
-     * @var $user ?User
-     */
+    #[Route('/chat/post-message', name: 'chat_postMessages', methods: 'POST')]
+    /** @var $user ?User */
 
     public function postMessage(Request $request, ChatRepository $chatRepository, EntityManagerInterface $entityManager, TopicHelper $topicHelper): JsonResponse
     {
