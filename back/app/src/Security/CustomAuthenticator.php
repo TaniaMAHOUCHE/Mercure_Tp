@@ -8,6 +8,8 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 
 class CustomAuthenticator extends AbstractAuthenticator
 {
@@ -19,8 +21,9 @@ class CustomAuthenticator extends AbstractAuthenticator
 
     public function authenticate(Request $request): Passport
     {
-        $username = $request->request->get('username');
-        $password = $request->request->get('password');
+        $request = json_decode($request->getContent(), true);
+        $username = $request["username"];
+        $password = $request["password"];
         return new Passport(
             new UserBadge($username),
             new PasswordCredentials($password)
@@ -29,12 +32,12 @@ class CustomAuthenticator extends AbstractAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        // TODO: Implement onAuthenticationSuccess() method.
+        return null;
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-        // TODO: Implement onAuthenticationFailure() method.
+        return null;
     }
 
 //    public function start(Request $request, AuthenticationException $authException = null): Response

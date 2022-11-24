@@ -23,7 +23,7 @@ class UserController extends AbstractController
      * @var $user ?User
      */
 
-    public function login($appSecret) : JsonResponse {
+    public function login(string $appSecret) : JsonResponse {
 
         $user = $this->getUser();
 
@@ -54,6 +54,9 @@ class UserController extends AbstractController
 
     public function userList(UserRepository $userRepository): JsonResponse
     {
+        return $this->json([
+            'users' => $userRepository->findAllButMe($this->getUser())
+        ], 200, []);
 
     }
 
