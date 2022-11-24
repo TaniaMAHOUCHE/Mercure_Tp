@@ -17,12 +17,8 @@ use Symfony\Component\HttpFoundation\Response;
 class UserController extends AbstractController
 {
 
-    /**
-     * @Route (path="/login", name="app_login")
-     * @return JsonResponse
-     * @var $user ?User
-     */
-
+    #[Route('/login', name: 'app_login')]
+    /** @var $user ?User */
     public function login(string $appSecret) : JsonResponse {
 
         $user = $this->getUser();
@@ -46,17 +42,12 @@ class UserController extends AbstractController
 
     }
 
-    /**
-     * @Route (path="/user-list", name="app_user_list", methods="GET")
-     * @return JsonResponse
-     * @var $user ?User
-     */
-
+    #[Route('/user-list', name: 'user_list', methods: 'GET')]
     public function userList(UserRepository $userRepository): JsonResponse
     {
         return $this->json([
             'users' => $userRepository->findAllButMe($this->getUser())
-        ], 200, []);
+        ], 200, [], ['groups' => 'main']);
 
     }
 

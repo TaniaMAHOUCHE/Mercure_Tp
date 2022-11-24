@@ -15,11 +15,8 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class ChatController extends AbstractController
 {
-    /**
-     * @Route (path="/chat/{topic}", name="chat_getMessages", methods="GET")
-     * @return JsonResponse
-     * @var $user ?User
-     */
+    #[Route('/chat/{topic}', name: 'chat_getMessages', methods: 'GET')]
+    /** @var $user ?User */
     public function getChatMessages(ChatRepository $chatRepository,
     Request $request, TopicHelper $topicHelper, string $topic): JsonResponse
     {
