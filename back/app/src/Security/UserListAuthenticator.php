@@ -36,7 +36,6 @@ class UserListAuthenticator extends AbstractAuthenticator
         try {
             $jwt = JWT::decode($token, new Key($this->appSecret, 'HS256'));
 
-            // dd($jwt->username);
             return new SelfValidatingPassport(
                 new UserBadge($jwt->username)
             );

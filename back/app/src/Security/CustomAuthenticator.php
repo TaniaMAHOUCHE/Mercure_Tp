@@ -15,7 +15,7 @@ class CustomAuthenticator extends AbstractAuthenticator
 {
     public function supports(Request $request): ?bool
     {
-        return $request->attributes->get('_route') === "app_login"
+        return $request->attributes->get('_route') === "app_login" || $request->attributes->get('_route') === "app_register"
         &&     $request->isMethod("POST");
     }
 

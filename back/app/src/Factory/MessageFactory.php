@@ -42,7 +42,7 @@ final class MessageFactory extends ModelFactory
             'date' => self::faker()->dateTimeBetween('-1 year'),
             'content' => self::faker()->text(),
             'chat' => ChatFactory::random(),
-            'userId' => UserFactory::random()
+            'author' => UserFactory::random()
         ];
     }
 

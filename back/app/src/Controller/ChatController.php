@@ -13,6 +13,10 @@ use App\Repository\ChatRepository;
 use App\Service\TopicHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class ChatController extends AbstractController
 {
@@ -30,7 +34,9 @@ class ChatController extends AbstractController
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        return $this->json(['chat' => $chatRepository->getAllMessagesOrderByDate($topic)], 200, [], ['groups' => 'main']);
+        $messageList = ['chat' => $chatRepository->getAllMessagesOrderByDate($topic)];
+
+        return $this->json($messageList, 200, [], ['groups' => 'main']);
     }
 
     #[Route('/chat/post-message', name: 'chat_postMessages', methods: 'POST')]
@@ -39,18 +45,22 @@ class ChatController extends AbstractController
     public function postMessage(Request $request, ChatRepository $chatRepository, EntityManagerInterface $entityManager, TopicHelper $topicHelper): JsonResponse
     {
         $user = $this->getUser();
-        $chat = $chatRepository->findOneBy(['topic' => $request->request->get('topic')]);
+        $request = json_decode($request->getContent(), true);
+        $topic = $request["topic"];
+
+        $chat = $chatRepository->findOneBy(['topic' => $topic]);
+        // dd($chat);
 
         if (!$chat) {
             $chat = new Chat();
-            $chat->setTopic($request->request->get('topic'));
+            $chat->setTopic($topic);
             $entityManager->persist($chat);
         }
 
-        $content = $request->request->get('content');
+        $content = $request["content"];
 
         try {
-            if (!$topicHelper->isUserInThisTopic($user->getId(), $request->request->get('topic'))) {
+            if (!$topicHelper->isUserInThisTopic($user->getId(), $topic)) {
                 return $this->json([
                     'status' => 0,
                     'error' => "Cet utilisateur n'a pas accès à ce topic"
@@ -58,16 +68,17 @@ class ChatController extends AbstractController
             }
 
             $message = new Message();
-            $message->setUser($user)
+            $message->setAuthor($user)
                     ->setChat($chat)
-                    ->setDate(new \DateTime())
+                    ->setDate(new \DateTime('',new \DateTimeZone('Europe/Paris')))
                     ->setContent($content);
 
             $entityManager->persist($message);
             $entityManager->flush();
 
             return $this->json([
-                'status' => 1
+                'status' => 1,
+                'message' => "Le message a été envoyé !"
             ], Response::HTTP_CREATED);
 
         } catch (\Exception $exception) {

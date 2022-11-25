@@ -33,7 +33,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\OneToMany(mappedBy: 'userId', targetEntity: Message::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Message::class, orphanRemoval: true)]
     private Collection $message;
 
     public function __construct()
@@ -123,7 +123,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->message->contains($message)) {
             $this->message->add($message);
-            $message->setUserId($this);
+            $message->setAuthor($this);
         }
 
         return $this;
@@ -133,8 +133,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->message->removeElement($message)) {
             // set the owning side to null (unless already changed)
-            if ($message->getUserId() === $this) {
-                $message->setUserId(null);
+            if ($message->getAuthor() === $this) {
+                $message->setAuthor(null);
             }
         }
 

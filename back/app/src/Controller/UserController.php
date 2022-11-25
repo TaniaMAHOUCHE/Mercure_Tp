@@ -17,7 +17,51 @@ use Symfony\Component\HttpFoundation\Response;
 class UserController extends AbstractController
 {
 
-    #[Route('/login', name: 'app_login')]
+    #[Route('/register', name: 'app_register', methods: 'POST')]
+    /** @var $user ?User */
+    public function register(string $appSecret, Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager) : JsonResponse {
+
+        $user = new User();
+        $request = json_decode($request->getContent(), true);
+        $username = $request["username"];
+        $password = $request["password"];
+
+        $user->setUsername($username)
+             ->setPassword($passwordHasher->hashPassword($user, $password));
+
+        // dd($user);
+        
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        if($user === null){
+            return $this->json([
+                'message' => 'missing credentials',
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+
+        $jwt = JWT::encode([
+            'username' => $user->getUsername(),
+            'id' => $user->getId()
+        ],
+            $appSecret,
+            'HS256');
+
+        return $this->json([
+            'message' => 'Nouvel utilisateur créé',
+            'username' => $username,
+            'password' => $password,
+            'jwt' => $jwt
+        ]);
+
+
+        // return $this->json([
+        //     'jwt' => $jwt
+        // ]);
+
+    }
+
+    #[Route('/login', name: 'app_login', methods: 'POST')]
     /** @var $user ?User */
     public function login(string $appSecret) : JsonResponse {
 

@@ -31,7 +31,7 @@ class Message
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'message')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['main'])]
-    private ?User $userId = null;
+    private ?User $author = null;
 
     public function getId(): ?int
     {
@@ -74,14 +74,14 @@ class Message
         return $this;
     }
 
-    public function getUserId(): ?User
+    public function getAuthor(): ?User
     {
-        return $this->userId;
+        return $this->author;
     }
 
-    public function setUserId(?User $userId): self
+    public function setAuthor(?User $author): self
     {
-        $this->userId = $userId;
+        $this->author = $author;
 
         return $this;
     }
