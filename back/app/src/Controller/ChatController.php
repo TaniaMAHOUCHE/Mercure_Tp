@@ -30,7 +30,7 @@ class ChatController extends AbstractController
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        return $this->json(['chat' => $chatRepository->getAllMessagesOrderByDate($topic)], 200, [], ['groups' => ['main']]);
+        return $this->json(['chat' => $chatRepository->getAllMessagesOrderByDate($topic)], 200, [], ['groups' => 'main']);
     }
 
     #[Route('/chat/post-message', name: 'chat_postMessages', methods: 'POST')]

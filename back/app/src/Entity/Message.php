@@ -13,6 +13,7 @@ class Message
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['main'])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -25,11 +26,11 @@ class Message
 
     #[ORM\ManyToOne(targetEntity: Chat::class, inversedBy: 'message')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['main'])]
     private ?Chat $chat = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'message')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['main'])]
     private ?User $userId = null;
 
     public function getId(): ?int

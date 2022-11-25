@@ -44,9 +44,9 @@ class ChatRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('chat')
             ->andWhere('chat.topic = :val')
             ->setParameter('val', $chatTopic)
-            ->innerJoin('chat.messages', 'messages')
-            ->addSelect('messages')
-            ->orderBy('messages.date', 'DESC')
+            ->innerJoin('chat.message', 'message')
+            ->addSelect('message')
+            ->orderBy('message.date', 'DESC')
             ->getQuery()
             ->getOneOrNullResult();
     }
