@@ -1,0 +1,19 @@
+main div#chat-zone {
+    background-color: rgb(215, 231, 192);
+    display: flex;
+    flex-direction: row;
+    border-radius: 20px;
+}
+
+section#sidebar {
+    height: 100%;
+    width: 30%;
+}
+
+section#conversation {
+    /* background-color: rgb(246, 175, 216); */
+    height: 100%;
+    width: 100%;
+
+}
+

@@ -1,13 +1,54 @@
-.App {
-    text-align: center;
-    display: flex;
-    min-height: 100vh;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    background-color: #9461ed;
-  }
+
+body {
+  margin :0;
+  padding: 0;
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  /* min-height: 100vh;
+  width: 100vw; */
+  justify-content: center;
+}
+
+main div.app-flex {
+  width:80%;
+  max-width:900px;
+  height:60%;
+  padding: 2em;
   
+}
+
+ul.router-element { 
+    background-color: rgb(162, 162, 162);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+ul.router-element li {
+    display: inline-block;
+}
+ul.router-element li a {
+    padding: 1em;
+    display: block;
+    text-decoration: none;
+}
+
+.auth-form-container {
+  background-color: #7439db;
+  position: absolute; /* postulat de départ */
+  top: 50%; 
+  left: 50%; /* à 50%/50% du parent référent */
+  transform: translate(-50%, -50%); /* décalage de 50% de sa propre taille */
+  width: 45%;
+}
+
   .auth-form-container, .login-form, .register-form {
     display: flex;
     flex-direction: column;
@@ -15,26 +56,26 @@
   
   @media screen and (min-width: 600px) {
     .auth-form-container {
-      padding: 5rem;
+      padding: 4rem;
       border: 1px solid white;
       border-radius: 10px;
       margin: 0.5rem;
     }
   }
   
-  label {
+  .auth label {
     text-align: left;
     padding: 0.25rem 0;
   }
   
-  input {
+  .auth input {
     margin: 0.5rem 0;
     padding: 1rem;
     border: none;
     border-radius: 10px;
   }
   
-  button {
+  .auth button {
     border: none;
     background-color: white;
     padding: 20px;

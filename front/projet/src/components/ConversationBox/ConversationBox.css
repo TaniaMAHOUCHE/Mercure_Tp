@@ -1,0 +1,73 @@
+
+.conversation-zone-container {
+    background-color: rgb(213, 213, 213);
+    border-radius: 0 20px 20px 0;
+}
+
+.conversation-zone-container .header-conversation  {
+    /* background-color: rgb(223, 123, 123); */
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+
+.conversation-zone-container .header-conversation h3 {
+    margin: 0;
+    text-align: center;
+}
+
+
+/*  Header  */ 
+.header-conversation{
+    /* background-color: coral; */
+    height: 60px;
+    /* border: 1px red solid; */
+}
+
+/* ZONE Pour collecter les message  */
+
+.main-area-conversation {
+    /* height: 600px; */
+    /* height: 300px; */
+    height: 400px;
+    margin: 10px;
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255);
+
+}
+
+
+/** ZONE POUR ENVOYER MESSAGE */
+div.send-text-area {
+    height: 80px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    
+
+}
+
+div.send-text-area .chat-input-zone {
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+div.send-text-area .chat-input-zone  textarea {
+    width: 90%;
+    border-radius: 10px;
+    height: 50px;
+}
+
+
+
+button#send-chat { 
+    border-radius: 50% ;
+    height: 45px ;
+    width:  45px;
+  
+}

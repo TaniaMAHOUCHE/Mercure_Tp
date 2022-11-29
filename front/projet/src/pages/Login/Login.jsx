@@ -58,14 +58,14 @@ export const Login = () => {
         
     <div className="auth-form-container">
         <h2>Login</h2>
-        <form className="login-form" onSubmit={handleSubmit}>
+        <form className="login-form auth" onSubmit={handleSubmit}>
             <label htmlFor="username">username</label>
             <input value={username} onChange={(e) => setUsername(e.target.value)}type="text" placeholder="username..." id="username" name="username" />
             <label htmlFor="password">password</label>
             <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="password..." id="password" name="password" />
             <button type="submit">Log In</button>
         </form>
-        <button className="link-btn">Don't have an account ? <Link to="/inscription"> Register here.</Link> </button>
+        <p className="link-btn">Don't have an account ? <Link to="/inscription"> Register here.</Link> </p>
 
         <h3> {textError} </h3>
     </div>

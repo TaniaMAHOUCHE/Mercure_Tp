@@ -45,14 +45,14 @@ export const Register = () => {
     return (
         <div className="auth-form-container">
             <h2>Register</h2>
-        <form className="register-form" onSubmit={handleSubmit}>
+        <form className="register-form auth" onSubmit={handleSubmit}>
             <label htmlFor="name">Full name</label>
             <input value={username} name="name" id="name" onChange={(e) => setUsername(e.target.value)} type="text" placeholder="full Name" />
             <label htmlFor="password">password</label>
             <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="********" id="password" name="password" />
             <button type="submit">Log In</button>
         </form>
-        <button className="link-btn">Already have an account ? <Link to="/connexion">Login here. </Link> </button>
+        <p className="link-btn">Already have an account ? <Link to="/connexion">Login here. </Link> </p>
 
         <h3> {textError} </h3>
 
