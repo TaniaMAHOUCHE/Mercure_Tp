@@ -17,9 +17,9 @@ export const Register = () => {
         registerFormData.append("username", username)
         registerFormData.append("password", password)
     
-        await axios({
-            url: "http://localhost:8956/register",
+        await axios("http://localhost:8956/register",{
             method: "POST",
+            credentials: "include",
             headers: {
                 'Content-Type' : 'application/json' ,
             },
@@ -28,17 +28,16 @@ export const Register = () => {
         })
             .then((response) => {
             if (response.status >= 200 && response.status <= 299) {
-                setResultData(response.data);
-                setSuccessRegister(true);
-                localStorage.setItem('jwt', response.data.jwt);
                 setTextError("");
-                // navigate("/home");
+                setSuccessRegister(true);
+                setResultData(response.data);
+                localStorage.setItem('jwt', JSON.stringify(response.data.jwt));
+                navigate("/home");
             } 
             })
             .catch(function (error) {
             setSuccessRegister(false) ;
             setTextError("Echec de l'inscription");
-            setResultData([]);
             });
     }
 
