@@ -15,8 +15,8 @@ export const Home = () => {
 
   const showDatas = async () => {
 
-        // Met à jour le titre du document via l’API du navigateur
-       await axios("http://localhost:1234/user-list", {
+        /** Met à jour le titre du document via l’API du navigateur */
+       await axios("http://localhost:8956/user-list", {
           method: "GET",
           credentials: "include",
           headers: {
@@ -39,7 +39,20 @@ export const Home = () => {
   }
 
   useEffect(() => {
-      showDatas();
+
+    showDatas();
+    const url = new URL('http://localhost:9090/.well-known/mercure');
+    url.searchParams.append('topic', 'https://example.com/my-private-topic');
+    url.searchParams.append('topic', 'https://example.com/info-data');
+
+    const eventSource = new EventSource(url, {withCredentials: true});
+    eventSource.onmessage = ({event}) => {
+        const results = JSON.parse(event.data);
+    }
+    
+    return() => {
+        eventSource.close();
+    }
     },[]);
 
 

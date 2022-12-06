@@ -18,7 +18,7 @@ export const Register = () => {
         registerFormData.append("password", password)
     
         await axios({
-            url: "http://localhost:1234/register",
+            url: "http://localhost:8956/register",
             method: "POST",
             headers: {
                 'Content-Type' : 'application/json' ,

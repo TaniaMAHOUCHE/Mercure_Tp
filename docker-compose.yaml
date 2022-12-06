@@ -21,7 +21,7 @@ services:
         container_name: symfony_docker
         restart: on-failure
         ports:
-            - "1234:80"
+            - "8956:80"
         volumes:
             - ./conf/site.conf:/etc/nginx/http.d/default.conf
             - ./back/app:/var/www/html
@@ -57,13 +57,15 @@ services:
             MERCURE_PUBLISHER_JWT_KEY: '!ChangeMe!'
             MERCURE_SUBSCRIBER_JWT_KEY: '!ChangeMe!'
             MERCURE_EXTRA_DIRECTIVES:
-                cors_origins "http://localhost:3000"
-                cors_origins "http://localhost:1234"
+                cors_origins "http://localhost:3001"
+                cors_origins "http://localhost:8956"
+
+
         # Uncomment the following line to enable the development mode
         command: /usr/bin/caddy run -config /etc/caddy/Caddyfile.dev
         ports:
             - "9090:80"
-            # - "443:443"
+            - "4433:443"
         volumes:
             - caddy_data:/data
             - caddy_config:/config
