@@ -21,6 +21,7 @@ class JWTHelper
         $payload = ["mercure" => [
             "subscribe" =>   [
                 "https://example.com/my-private-topic",
+                // "https://example.com/user/{$user->getId()}/{?topic}",
                 "https://example.com/info-data",
                 `https://example.com/user/{$user->getId()}/?topic=` . urlencode("https://example.com/my-private-topic")
             ],

@@ -77,29 +77,38 @@ class UserController extends AbstractController
     */
     #[Route('/login', name: 'app_login', methods: 'POST')]
     /** @var $user ?User */
-    public function login( string $appSecret , Request $request , CookieHelper $cookieHelper) : JsonResponse {
+    public function login( string $appSecret , Request $request , CookieHelper $cookieHelper, JWTHelper $jwtHelper) : JsonResponse {
 
-        $user = $this->getUser();
+        // $user = $this->getUser();
+        // if($user == null){ 
+        //     return $this->json([
+        //         'message' => 'missing credentials',
+        //     ], Response::HTTP_UNAUTHORIZED);
+        // }
 
-        if($user === null){
+        if ($user = $this->getUser()) {
+
+            $jwtForLogin = JWT::encode([
+                'username' => $user->getUsername(),
+                'id' => $user->getId()
+            ],$appSecret,'HS256');
+
+            // dd($user);
+
+            return $this->json([
+                // 'jwt'=> $jwtHelper->createJWT($user),
+                'jwt' => $jwtForLogin,
+                'userId' => $user->getId(),
+                'username' => json_decode($request->getContent(), true)['username'],
+            ], 200, [
+                'set-cookie' => $cookieHelper->createMercureCookie($user)
+            ]);
+
+        } else {
             return $this->json([
                 'message' => 'missing credentials',
-            ], Response::HTTP_UNAUTHORIZED);
+                ], Response::HTTP_UNAUTHORIZED);
         }
-
-        $jwtForLogin = JWT::encode([
-            'username' => $user->getUsername(),
-            'id' => $user->getId()
-        ],$appSecret,'HS256');
-    
-    
-        return $this->json([
-            'jwt' => $jwtForLogin,
-            'userId' => $user->getId(),
-            'username' => json_decode($request->getContent(), true)['username'],
-        ], 200, [
-            'set-cookie' => $cookieHelper->createMercureCookie($user)
-        ]);
 
     }
 
@@ -107,6 +116,9 @@ class UserController extends AbstractController
     #[Route('/user-list', name: 'user_list', methods: 'GET')]
     public function userList(UserRepository $userRepository): JsonResponse
     {
+        // $user = $this->getUser();
+        // dd($user);
+        // dd($this->getUser());
         return $this->json([
             'users' => $userRepository->findAllButMe($this->getUser())
         ], 200, [], ['groups' => 'main']);
