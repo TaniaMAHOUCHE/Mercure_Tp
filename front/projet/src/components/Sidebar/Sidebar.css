@@ -34,6 +34,7 @@ ul.username-only {
 ul.username-only li p {
     display: block;
     color: #000;
+    font-weight: bold;
     padding: 8px 16px;
     text-decoration: none;
     text-align: center;
@@ -42,6 +43,20 @@ ul.username-only li p {
 
 /* Change the link color on hover */
 ul.username-only li p:hover {
-    background-color: #555;
+    background-color: #4682B4;
     color: white;
+}
+
+#logout{
+    color: white;
+    background-color: #C0C0C0;
+    width: 100%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+#logout:hover{
+    background-color: #A9A9A9;
 }

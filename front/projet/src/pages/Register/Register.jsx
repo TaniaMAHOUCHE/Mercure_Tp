@@ -43,17 +43,15 @@ export const Register = () => {
     return (
         <div className="auth-form-container">
             <h2>Inscription</h2>
-        <form className="register-form auth" onSubmit={handleSubmit}>
-            <label htmlFor="name">Nom :</label>
-            <input value={username} name="name" id="name" onChange={(e) => setUsername(e.target.value)} type="text" placeholder="full Name" />
-            <label htmlFor="password">Mot de passe : </label>
-            <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="mot de passe" id="password" name="password" />
-            <button type="submit">S'inscrire </button>
-        </form>
-        <p className="link-btn">Vous avez déjà un compte ?  <Link to="/"> Se connecter </Link> </p>
-
-        <h3> {textError} </h3>
-
-    </div>
+            <form className="register-form auth" onSubmit={handleSubmit}>
+                {/* <label htmlFor="name">Nom :</label> */}
+                <input value={username} name="name" id="name" onChange={(e) => setUsername(e.target.value)} type="text" placeholder="Pseudo" />
+                {/* <label htmlFor="password">Mot de passe : </label> */}
+                <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Mot de passe" id="password" name="password" />
+                <button style={{ backgroundColor: '#4682B4', color: 'white', fontWeight: 'bold'}} type="submit">S'inscrire </button>
+            </form>
+            <p className="link-btn">Vous avez déjà un compte ?  <Link style={{ textDecoration: 'none', color: '#4682B4', fontWeight: 'bold'}} to="/"> Se connecter </Link> </p>
+            <h3> {textError} </h3>
+        </div>
     )
 }

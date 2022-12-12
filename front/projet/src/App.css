@@ -21,6 +21,11 @@ main div.app-flex {
   
 }
 
+h2{
+  color: #4682B4; 
+  font-weight: bold
+}
+
 ul.router-element { 
     background-color: rgb(162, 162, 162);
     display: flex;
@@ -41,12 +46,13 @@ ul.router-element li a {
 }
 
 .auth-form-container {
-  background-color: #7439db;
+  background-color: #C0C0C0;
   position: absolute; /* postulat de départ */
   top: 50%; 
   left: 50%; /* à 50%/50% du parent référent */
   transform: translate(-50%, -50%); /* décalage de 50% de sa propre taille */
   width: 45%;
+  color:black;
 }
 
   .auth-form-container, .login-form, .register-form {
@@ -81,11 +87,12 @@ ul.router-element li a {
     padding: 20px;
     border-radius: 10px;
     cursor: pointer;
-    color: #7439db;
+    color: black;
   }
   
   .link-btn {
     background: none;
     color: white;
-    text-decoration: underline;
+    /* text-decoration: underline; */
+    text-decoration: none;
   }

@@ -1,12 +1,20 @@
-import React from 'react'
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Sidebar.css' ;
+import { UserContext } from '../../Context/UserContext';
+
 
 export const Sidebar = ({allUsers}) => {
+  const { user, setUser } = useContext(UserContext);
 
   let navigate = useNavigate();
   const handleClick = (e) => {
     navigate(`/user/${e}`) ;
+  }
+
+  const logout = () => {
+      localStorage.removeItem('jwt');
+      setUser("");
   }
 
   return (
@@ -23,6 +31,7 @@ export const Sidebar = ({allUsers}) => {
           ))}
         </ul>
     </div>
+    <button id="logout" onClick={logout}> Déconnexion </button>
     </>
   )
 }

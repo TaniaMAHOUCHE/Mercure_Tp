@@ -26,6 +26,7 @@ export const Login = () => {
     if( element && element !== undefined && element !== null ) {
       return element ;
     }
+
   }
 
 
@@ -47,8 +48,7 @@ const handleSubmit = (e) => {
 
         console.log(response.data)
         localStorage.setItem('jwt', JSON.stringify(response.data.jwt));
-
-
+ 
         const url = new URL('http://localhost:9090/.well-known/mercure');
         url.searchParams.append('topic', 'https://example.com/my-private-topic');
         const eventSource = new EventSource(url, {withCredentials: true});
@@ -77,17 +77,17 @@ const handleSubmit = (e) => {
   return (
         
     <div className="auth-form-container">
-        <h2>Login</h2>
-        <form className="login-form auth" onSubmit={handleSubmit}>
-            <label htmlFor="username">Nom utilisateur : </label>
-            <input value={username} onChange={(e) => setUsername(e.target.value)}type="text" placeholder="Nom utilisateur" id="username" name="username" />
-            <label htmlFor="password">Mot de passe : </label>
-            <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="mot de passe" id="password" name="password" />
-            <button type="submit">Se connecter</button>
-        </form>
-        <p className="link-btn">Vous n'avez pas encore de compte ? <Link to="/inscription"> S'inscrire</Link> </p>
+      <h2>Connexion</h2>
+      <form className="login-form auth" onSubmit={handleSubmit}>
+          {/* <label htmlFor="username">Nom d'utilisateur : </label> */}
+          <input value={username} onChange={(e) => setUsername(e.target.value)}type="text" placeholder="Pseudo" id="username" name="name" />
+          {/* <label htmlFor="password">Mot de passe : </label> */}
+          <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Mot de passe" id="password" name="password" />
+          <button style={{ backgroundColor: '#4682B4', color: 'white', fontWeight: 'bold'}} type="submit">Se connecter</button>
+      </form>
+      <p className="link-btn">Vous n'avez pas encore de compte ? <Link style={{ textDecoration: 'none', color: '#4682B4', fontWeight: 'bold'}} to="/inscription"> S'inscrire</Link> </p>
 
-        <h3> {textError} </h3>
+      <h3> {textError} </h3>
     </div>
 )
 }

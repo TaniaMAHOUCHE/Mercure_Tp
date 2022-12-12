@@ -59,7 +59,7 @@ export const Conversation = () => {
       if (successLogin) {
         return (
           <>
-              <section id="sidebar"> <Sidebar allUsers={results} /> </section>
+              <section id="sidebar"> <Sidebar style={{ textDecoration: 'none'}} allUsers={results} /> </section>
               <section id="conversation"> <ConversationBox allUsers={results} /> </section>
           </>
         ) 
@@ -76,7 +76,7 @@ export const Conversation = () => {
 
   return (
 
-    <div id="chat-zone">
+    <div id="chat-zone" style={{ textDecoration: 'none'}}>
         {renderListUser ()}
     </div>
  
