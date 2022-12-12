@@ -12,11 +12,16 @@ use App\Entity\User;
 use App\Repository\ChatRepository;
 use App\Service\TopicHelper;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
 use Symfony\Component\Mercure\PublisherInterface;
 use Symfony\Bundle\MercureBundle\Mercure;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class ChatController extends AbstractController
 {
@@ -128,26 +133,55 @@ class ChatController extends AbstractController
 
 
     // #[Route('/ping/{user}', name: 'ping_user', methods: 'POST')]
-    // public function pingUser(HubInterface $hub)
-    // {
-    //     $user = $this->getUser();
-    //     $update = new Update(
-    //         [
-    //             "https://example.com/my-private-topic",
-    //             "https://example.com/user/{$user->getId()}/?topic=" . urlencode("https://example.com/my-private-topic")
-    //         ],
-    //         json_encode([
-    //             'user' => $user->getUsername(),
-    //             'id' => $user->getId()
-    //         ]),
-    //         true
-    //     );
+    #[Route('/message/{userId}', name: 'ping_user', methods: 'POST' )]
 
-    //     $hub->publish($update);
+    public function pingUser(HubInterface $hub ,ManagerRegistry $doctrine, int $userId)
+    {
+        $user = $this->getUser();
+        
+        $userToTalk = $doctrine->getRepository(User::class)->findOneBy(['id' =>  $userId]) ;
 
-    //     return $this->json([
-    //         'message' => 'Ping sent'
-    //     ]);
-    // }
+        if (!$userToTalk) {
+            throw $this->createNotFoundException(
+                'No user found for id '.$userId 
+            );
+        }
+
+
+        // $update = new Update(
+        //     [
+        //         "https://example.com/my-private-topic",
+        //         "https://example.com/user/{$user->getId()}/?topic=" . urlencode("https://example.com/my-private-topic")
+        //     ],
+        //     json_encode([
+        //         'user' => $user->getUsername(),
+        //         'id' => $user->getId()
+        //     ]),
+        //     true
+        // );
+
+
+        $update = new Update(
+            [
+                "https://example.com/my-private-topic"
+            ],
+            json_encode([
+                'username' => $userToTalk->getUsername(),
+                'userId' => $userToTalk->getId()
+            ]),
+            true
+        );
+
+        $hub->publish($update) ;
+
+
+        return new Response('Message envoyé!');
+
+        // return $this->json([
+        //     'status' => 1,
+        //     'message' => "Le message a été envoyé !"
+        // ], Response::HTTP_CREATED);
+
+    }
 
 }
