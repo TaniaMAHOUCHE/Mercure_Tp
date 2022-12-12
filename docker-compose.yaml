@@ -59,7 +59,10 @@ services:
             MERCURE_SUBSCRIBER_JWT_KEY: 'ChangeThisMercureHubJWTSecretKey'
             MERCURE_EXTRA_DIRECTIVES:
                 cors_origins "http://localhost:3001"
+                cors_origins "http://127.0.0.1:3001"
                 cors_origins "http://localhost:8956"
+                cors_origins "http://127.0.0.1:8956"
+
 
 
         # Uncomment the following line to enable the development mode
