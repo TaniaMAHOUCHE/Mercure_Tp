@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { AsyncStorage } from 'react-native';
@@ -15,6 +15,48 @@ export const Login = () => {
   let navigation = useNavigation();
   const [textError, setTextError] = useState("") ;
 
+  const styles = StyleSheet.create({
+    container: {
+      backgroundColor: "silver",
+      padding: 16,
+    },
+    title: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      color: 'black',
+      marginBottom: 16,
+    },
+    textInput: {
+      backgroundColor: '#fff',
+      padding: 8,
+      marginBottom: 15,
+      marginTop: 10,
+      borderRadius: 10
+    },
+    loginButton: {
+      backgroundColor: 'grey',
+      marginTop: 8,
+      padding: 8,
+      borderRadius: 8,
+      width: 130,
+      alignItems: "center"
+    },
+    loginText: {
+      color: '#fff',
+      fontWeight: 'bold',
+    },
+    registerLink: {
+      marginTop: 20,
+      color: 'grey',
+    },
+    errorMessage: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: '#fff',
+      marginTop: 16,
+    },
+  })
+
   useEffect(() => {
 
   }, [username, password]);
@@ -29,7 +71,7 @@ export const Login = () => {
     try {
       const response = await axios({
         method: 'POST',
-        url: 'http://192.168.222.202:8956/login',
+        url: 'http://172.20.10.2:8956/login',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json'
@@ -51,7 +93,7 @@ export const Login = () => {
         setSuccessLogin(true);
         setResult(data);
         setTextError('');
-        navigation.navigate('Home');
+        navigation.navigate('Users');
       }
     
     } catch (error) {
@@ -68,22 +110,22 @@ export const Login = () => {
 
   return (
         
-    <View style={{backgroundColor: "#7439db"}}>
-        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Login</Text>
+    <View style={styles.container}>
+        <Text style={styles.title}>Se connecter</Text>
         <View>
-            <Text label="username">username</Text>
-            <TextInput value={username} onChangeText={(value) => setUsername(value)} type="text" placeholder="Username" id="username" name="username" />
-            <Text label="password">password</Text>
-            <TextInput value={password} onChangeText={(value) => setPassword(value)} type="password" placeholder="Mot de passe" id="password" name="password" />
-            <TouchableOpacity type="submit" onPress={handleSubmit} >
-              <Text>Log In</Text>
+            <Text label="username">Pseudo</Text>
+            <TextInput style={styles.textInput} value={username} onChangeText={(value) => setUsername(value)} type="text" placeholder="pseudo" id="username" name="username" />
+            <Text label="password">Mot de passe</Text>
+            <TextInput style={styles.textInput} value={password} onChangeText={(value) => setPassword(value)} type="password" placeholder="Mot de passe" id="password" name="password" secureTextEntry={true}/>
+            <TouchableOpacity type="submit" onPress={handleSubmit} style={styles.loginButton}>
+              <Text style={styles.loginText}>Se connecter</Text>
             </TouchableOpacity>
         </View>
         <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-          <Text>Register here</Text>
+          <Text style={styles.registerLink}>S'inscrire ici</Text>
         </TouchableOpacity>
 
-        <Text  style={{ fontSize: 16, fontWeight: 'bold' }}> {textError} </Text>
+        <Text style={styles.errorMessage}> {textError} </Text>
     </View>
 )
 }

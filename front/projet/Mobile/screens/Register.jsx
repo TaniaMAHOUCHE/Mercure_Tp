@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { AsyncStorage } from 'react-native';
@@ -12,17 +12,59 @@ export const Register = () => {
   const [successRegister, setSuccessRegister] = useState(null);
   let navigation = useNavigation();
   
+  const styles = StyleSheet.create({
+    container: {
+      backgroundColor: "silver",
+      padding: 16,
+    },
+    title: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      color: 'black',
+      marginBottom: 16,
+    },
+    textInput: {
+      backgroundColor: '#fff',
+      padding: 8,
+      marginBottom: 15,
+      marginTop: 10,
+      borderRadius: 10
+    },
+    signinButton: {
+      backgroundColor: 'grey',
+      marginTop: 8,
+      padding: 8,
+      borderRadius: 8,
+      width: 130,
+      alignItems: "center"
+    },
+    signinText: {
+      color: '#fff',
+      fontWeight: 'bold',
+    },
+    loginLink: {
+      marginTop: 20,
+      color: 'grey',
+    },
+    errorMessage: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: '#fff',
+      marginTop: 16,
+    },
+  });
 
   const handleSubmit = async () => {
       
     const registerFormData = new FormData();
-    registerFormData.append("username", username)
-    registerFormData.append("password", password)
+    registerFormData.append("username", username);
+    registerFormData.append("password", password);
+
 
     try {
       const response = await axios({
           method: "POST",
-          url: 'http://192.168.222.202:8956/register',
+          url: 'http://172.20.10.2:8956/register',
           credentials: "include",
           headers: {
               'Content-Type' : 'application/json' ,
@@ -55,22 +97,22 @@ export const Register = () => {
 
     return (
 
-      <View>
-          <Text>Register</Text>
-        <View onSubmit={handleSubmit}>
-            <Text label="name">Username</Text>
-            <TextInput value={username} name="name" id="name" onChangeText={(value) => setUsername(value)} type="text" placeholder="Username" />
-            <Text label="password">password</Text>
-            <TextInput value={password} onChangeText={(value) => setPassword(value)} type="password" placeholder="********" id="password" name="password" />
-            <TouchableOpacity type="submit" onPress={handleSubmit}>
-              <Text>Sign up</Text>
+      <View style={styles.container}>
+          <Text style={styles.title}>S'inscrire</Text>
+        <View>
+            <Text label="name">Pseudo</Text>
+            <TextInput style={styles.textInput} value={username} name="name" id="name" onChangeText={(value) => setUsername(value)} type="text" placeholder="Pseudo" />
+            <Text label="password">Mot de passe</Text>
+            <TextInput style={styles.textInput} value={password} onChangeText={(value) => setPassword(value)} type="password" placeholder="mot de passe" id="password" name="password" secureTextEntry={true}/>
+            <TouchableOpacity type="submit" onPress={handleSubmit} style={styles.signinButton}>
+              <Text style={styles.signinText}>S'inscrire</Text>
             </TouchableOpacity>
         </View>
         <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-          <Text>Already have an account ?</Text>
+          <Text style={styles.loginLink}>Vous avez déjà un compte ? Connectez-vous ici</Text>
         </TouchableOpacity>
 
-        <Text style={{ fontSize: 16, fontWeight: 'bold' }}> {textError} </Text>
+        <Text style={styles.errorMessage}> {textError} </Text>
 
     </View>
     )

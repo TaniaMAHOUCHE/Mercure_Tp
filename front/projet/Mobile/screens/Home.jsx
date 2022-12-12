@@ -1,19 +1,26 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext, createContext } from 'react';
 import { View, TouchableOpacity, FlatList, Text, StyleSheet, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { AsyncStorage } from 'react-native';
 import EventSource from 'react-native-event-source';
 import queryString from 'query-string';
+import UserContext from '../components/UserContext';
 
   
 const Home = () => {
   
+  const [user, setUser] = useContext(UserContext);
   const [successLogin , setsuccessLogin ] = useState(null);
-  const [textError, setTextError] = useState("") ;
+  const [textError, setTextError] = useState("");
   const saved = AsyncStorage.getItem("jwt");
   const [results  , setResults] = useState([]);
   let navigation = useNavigation();
+
+  const logOut = () => {
+    AsyncStorage.removeItem('jwt');
+    setUser("");
+  }
 
   const styles = StyleSheet.create({
     userList: {
@@ -27,12 +34,13 @@ const Home = () => {
       fontWeight: 'bold',
     },
     logoutButton: {
-      display: "flex",
-      justifyContent : "flex-end",
-      marginBottom: 1,
-      padding: 5,
       backgroundColor: 'grey',
-      borderRadius: 5,
+      marginTop: 8,
+      marginLeft: 5,
+      padding: 8,
+      borderRadius: 8,
+      width: 130,
+      alignItems: "center"
     },
     logoutText: {
       fontSize: 16,
@@ -47,7 +55,7 @@ const Home = () => {
       /** Met à jour le titre du document via l’API du navigateur */
       const response = await axios({
         method: "GET",
-        url : "http://192.168.222.202:8956/user-list",
+        url : "http://172.20.10.2:8956/user-list",
         credentials: "include",
         headers: {
             "Authorization" : `Bearer ${saved}`,
@@ -77,7 +85,7 @@ const Home = () => {
     showDatas();
     const query = queryString.parse('topic=https://example.com/my-private-topic');
     const queryString2 = queryString.stringify(query);
-    const url = `http://192.168.222.202/.well-known/mercure?${queryString2}`;
+    const url = `http://172.20.10.2/.well-known/mercure?${queryString2}`;
     console.log(url);
     const eventSource = new EventSource(url, {withCredentials: true});
     console.log("EventSource", eventSource);
@@ -97,19 +105,6 @@ const Home = () => {
     navigation.navigate(`/user/${e}`)
   }
 
-  const logOut = () => {
-    axios.post('http://192.168.222.202:8956/logout')
-    .then(() => {
-      AsyncStorage.setItem('jwt', 'session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;');
-    
-      navigation.navigate(`Login`)
-    })
-    .catch((error) => {
-      console.error(error);
-      setTextError("Echec de la requête") ;
-    });
-  }
-
 
   const renderListUser = () => {
     console.log("THERE", results.users);
@@ -123,8 +118,8 @@ const Home = () => {
               </View>
             ))}
           </ScrollView>
-          <TouchableOpacity style={styles.logoutButton} onPress={() => logOut()}>
-            <Text style={styles.logoutText}>Log out</Text>
+          <TouchableOpacity style={styles.logoutButton} onPress={logOut}>
+            <Text style={styles.logoutText}>Déconnexion</Text>
           </TouchableOpacity>
         </View>
       ) 
