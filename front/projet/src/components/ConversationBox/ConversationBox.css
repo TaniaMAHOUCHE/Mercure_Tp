@@ -41,7 +41,7 @@
 
 
 /** ZONE POUR ENVOYER MESSAGE */
-div.send-text-area {
+form.send-text-area {
     height: 80px;
     display: flex;
     flex-direction: row;
@@ -50,14 +50,14 @@ div.send-text-area {
 
 }
 
-div.send-text-area .chat-input-zone {
+form.send-text-area .chat-input-zone {
     width: 90%;
     display: flex;
     flex-direction: row;
     justify-content: center;
 }
 
-div.send-text-area .chat-input-zone  textarea {
+form.send-text-area .chat-input-zone textarea {
     width: 90%;
     border-radius: 10px;
     height: 50px;
@@ -69,5 +69,4 @@ button#send-chat {
     border-radius: 50% ;
     height: 45px ;
     width:  45px;
-  
 }

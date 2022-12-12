@@ -22,7 +22,7 @@ export const Register = () => {
     try {
       const response = await axios({
           method: "POST",
-          url: 'http://172.20.10.2:8956/register',
+          url: 'http://192.168.222.202:8956/register',
           credentials: "include",
           headers: {
               'Content-Type' : 'application/json' ,

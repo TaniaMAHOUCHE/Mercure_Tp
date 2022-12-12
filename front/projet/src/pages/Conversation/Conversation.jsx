@@ -19,6 +19,7 @@ export const Conversation = () => {
       await axios("http://localhost:8956/user-list", {
         method: "GET",
         credentials: "include",
+        withCredentials: true,
         headers: {
             "Authorization" : `Bearer ${initialValue}`,
         },
@@ -30,6 +31,17 @@ export const Conversation = () => {
               setsuccessLogin(true) ;
               setTextError("") ;
               setResults(response.data) ;
+
+              const url = new URL('http://localhost:9090/.well-known/mercure');
+              url.searchParams.append('topic', 'https://example.com/my-private-topic');
+          
+              const eventSource = new EventSource(url, {withCredentials: true});
+              eventSource.onmessage = event => {
+                  const results = JSON.parse(event.data);
+              }
+              return() => {
+                  eventSource.close();
+              }
           } 
       }) 
       .catch( (error) => {

@@ -19,7 +19,8 @@ const titleName = allUsers.users.map((user) => {
   return userName ;
 }) ;
 
-  const handleClick = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault() ;   
     setConversation({
       'userID': Id,
       "userText": currentValue
@@ -36,16 +37,20 @@ const titleName = allUsers.users.map((user) => {
          <div className='header-conversation'>
             <h3>{titleName}</h3>
          </div>
-         <div className='main-area-conversation'>
 
+         <div className='main-area-conversation'>
          </div>
-         <div className='send-text-area'>
-            <div className='chat-input-zone'>
-                  <textarea id="chat-input" placeholder="..."  value={currentValue}  onChange={e => setCurrentValue(e.target.value)} ></textarea>
-            </div>
-            <div className="btn-send" >
-                  <button id="send-chat" onClick={handleClick} ></button>
-            </div>
+         
+         <div>
+            <form onSubmit={handleSubmit} className='send-text-area' >
+                <div className='chat-input-zone'>
+                      <textarea id="chat-input" placeholder="..."  value={currentValue}  onChange={e => setCurrentValue(e.target.value)} ></textarea>
+                </div>
+
+                <div className="btn-send" >
+                      <button id="send-chat" ></button>
+                </div>
+            </form>
          </div>
       </div> 
     </div>

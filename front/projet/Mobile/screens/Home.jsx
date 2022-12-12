@@ -47,7 +47,7 @@ const Home = () => {
       /** Met à jour le titre du document via l’API du navigateur */
       const response = await axios({
         method: "GET",
-        url : "http://172.20.10.2:8956/user-list",
+        url : "http://192.168.222.202:8956/user-list",
         credentials: "include",
         headers: {
             "Authorization" : `Bearer ${saved}`,
@@ -77,7 +77,7 @@ const Home = () => {
     showDatas();
     const query = queryString.parse('topic=https://example.com/my-private-topic');
     const queryString2 = queryString.stringify(query);
-    const url = `http://172.20.10.2/.well-known/mercure?${queryString2}`;
+    const url = `http://192.168.222.202/.well-known/mercure?${queryString2}`;
     console.log(url);
     const eventSource = new EventSource(url, {withCredentials: true});
     console.log("EventSource", eventSource);
@@ -98,7 +98,7 @@ const Home = () => {
   }
 
   const logOut = () => {
-    axios.post('http://172.20.10.2:8956/logout')
+    axios.post('http://192.168.222.202:8956/logout')
     .then(() => {
       AsyncStorage.setItem('jwt', 'session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;');
     
