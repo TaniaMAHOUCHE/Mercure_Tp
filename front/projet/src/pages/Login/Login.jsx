@@ -4,7 +4,6 @@ import axios from 'axios';
 import { useCookies } from "react-cookie";
 import { useEffect } from 'react';
 import { httpPost } from '../../Service/Auth';
-// import { UserContext } from '../../App';
 import { UserContext } from '../../Context/UserContext';
 
 
@@ -26,16 +25,10 @@ export const Login = () => {
     if( element && element !== undefined && element !== null ) {
       return element ;
     }
-
   }
 
-
-
-
 const handleSubmit = (e) => {
-
   e.preventDefault()
-
   const userData = new FormData() ;
   userData.append('username',username);
   userData.append('password',password);
@@ -45,24 +38,7 @@ const handleSubmit = (e) => {
         setErrors("");
         setsuccessLogin(true) ;
         setTextError("") ;
-
-        console.log(response.data)
         localStorage.setItem('jwt', JSON.stringify(response.data.jwt));
- 
-        const url = new URL('http://localhost:9090/.well-known/mercure');
-        url.searchParams.append('topic', 'https://example.com/my-private-topic');
-        const eventSource = new EventSource(url, {withCredentials: true});
-        eventSource.onmessage = ({event}) => {
-            const results = JSON.parse(event.data);
-        }
-
-        // if (cleanDataFromAPI( response.data.mercure) ) {
-        //   let fromAPI =  cleanDataFromAPI( response.data.mercure)  ;
-        //   let cleanUPcookie = fromAPI.replace('mercureAuthorization=', '') ;
-        //   setCookie("mercureAuthorization", cleanUPcookie , {
-        //     path: "/"
-        //   });
-        // }
         setUser(cleanDataFromAPI(response.data.username));
         navigate("/home");
       }
@@ -79,9 +55,7 @@ const handleSubmit = (e) => {
     <div className="auth-form-container">
       <h2>Connexion</h2>
       <form className="login-form auth" onSubmit={handleSubmit}>
-          {/* <label htmlFor="username">Nom d'utilisateur : </label> */}
           <input value={username} onChange={(e) => setUsername(e.target.value)}type="text" placeholder="Pseudo" id="username" name="name" />
-          {/* <label htmlFor="password">Mot de passe : </label> */}
           <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Mot de passe" id="password" name="password" />
           <button style={{ backgroundColor: '#4682B4', color: 'white', fontWeight: 'bold'}} type="submit">Se connecter</button>
       </form>

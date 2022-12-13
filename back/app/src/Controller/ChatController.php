@@ -13,6 +13,7 @@ use App\Repository\ChatRepository;
 use App\Service\TopicHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
@@ -47,7 +48,7 @@ class ChatController extends AbstractController
     #[Route('/chat/post-message', name: 'chat_postMessages', methods: 'POST')]
     /** @var $user ?User */
 
-    public function postMessage(PublisherInterface $publisher, HubInterface $hub, Request $request, ChatRepository $chatRepository, EntityManagerInterface $entityManager, TopicHelper $topicHelper): JsonResponse
+    public function postMessage( HubInterface $hub, Request $request, ChatRepository $chatRepository, EntityManagerInterface $entityManager, TopicHelper $topicHelper): JsonResponse
     {
         $user = $this->getUser();
         $request = json_decode($request->getContent(), true);
@@ -89,27 +90,12 @@ class ChatController extends AbstractController
                 ],
                 json_encode([
                     'user' => $user->getUsername(),
-                    'id' => $user->getId(),
-                    // 'message' => $content
+                    'id' => $user->getId()
                 ]),
                 true
             );
-
-            // dd($hub);
-    
-            // dd($update);
     
             $hub->publish($update);
-
-
-            // dd(get_class($publisher));
-
-            // dd($publisher);
-
-            // $publisher->publish($update);
-
-            // $mercure->update($update);
-
 
             return $this->json([
                 'status' => 1,
@@ -131,39 +117,26 @@ class ChatController extends AbstractController
         return new Response('Message envoyé!');
     }
 
-
-    // #[Route('/ping/{user}', name: 'ping_user', methods: 'POST')]
     #[Route('/message/{userId}', name: 'ping_user', methods: 'POST' )]
-
-    public function pingUser(HubInterface $hub ,ManagerRegistry $doctrine, int $userId)
+    public function pingUser(HubInterface $hub ,ManagerRegistry $doctrine, int $userId , Request $request)
     {
         $user = $this->getUser();
-        
         $userToTalk = $doctrine->getRepository(User::class)->findOneBy(['id' =>  $userId]) ;
+
+
+        $requestElement = json_decode($request->getContent(), true);
+        $requestElement["message"] ;
+
 
         if (!$userToTalk) {
             throw $this->createNotFoundException(
                 'No user found for id '.$userId 
             );
         }
-
-
-        // $update = new Update(
-        //     [
-        //         "https://example.com/my-private-topic",
-        //         "https://example.com/user/{$user->getId()}/?topic=" . urlencode("https://example.com/my-private-topic")
-        //     ],
-        //     json_encode([
-        //         'user' => $user->getUsername(),
-        //         'id' => $user->getId()
-        //     ]),
-        //     true
-        // );
-
-
+                 
         $update = new Update(
-            [
-                "https://example.com/my-private-topic"
+            [ 
+            "https://example.com/my-private-topic/". $userToTalk->getId()
             ],
             json_encode([
                 'username' => $userToTalk->getUsername(),
@@ -171,17 +144,100 @@ class ChatController extends AbstractController
             ]),
             true
         );
+ 
+
+        $hub->publish($update) ;
+
+        return $this->json([
+            'message' => 'Message envoyé',
+        ], 200);    
+    }
+
+
+
+    #[Route('/publish-post/{userId}', name: 'publish', methods: 'POST' )]
+    public function publishPost( 
+        Request $request,
+        HubInterface $hub ,
+        ChatRepository $chatRepository,
+        TopicHelper $topicHelper,
+        EntityManagerInterface $entityManager,
+        ManagerRegistry $doctrine,
+        int $userId
+        )
+    {
+   
+        $request = json_decode($request->getContent(), true);
+        $topicId = $request["topic"];
+        $messageContent = $request["message"];
+        $user = $this->getUser();
+        // currrent user @ destinanatire
+        $creatTopic = $user->getId().'@'.$topicId;
+        $userToTalk = $doctrine->getRepository(User::class)->findOneBy(['id' =>  $userId]) ;
+
+
+        if( !($topicId && $messageContent)){
+            throw $this->createNotFoundException(
+                'Informations are missing',
+            );
+        }
+
+        $chat = $chatRepository->findOneBy(['topic' => $creatTopic]);
+
+        if (!$chat) {
+            $chat = new Chat();
+            $chat->setTopic($creatTopic);
+            $entityManager->persist($chat);
+        }
+
+   
+
+        // if (!$topicHelper->isUserInThisTopic($user->getId(), $creatTopic)) {
+        //     return $this->json([
+        //         'status' => 0,
+        //         'error' => "Cet utilisateur n'a pas accès à ce topic"
+        //     ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        // }
+
+        $message = new Message();
+        $message->setAuthor($user)
+                ->setChat($chat)
+                ->setDate(new \DateTime('',new \DateTimeZone('Europe/Paris')))
+                ->setContent($messageContent);
+
+            $entityManager->persist($message);
+            $entityManager->flush();
+
+        
+                          
+        $update = new Update(
+            [ 
+            "https://example.com/my-private-topic/". $userToTalk->getId()
+            ],
+            json_encode([
+                'desti' => $userToTalk->getId(),
+                'data' => $messageContent,
+            ]),
+            true
+        );
+ 
 
         $hub->publish($update) ;
 
 
-        return new Response('Message envoyé!');
 
-        // return $this->json([
-        //     'status' => 1,
-        //     'message' => "Le message a été envoyé !"
-        // ], Response::HTTP_CREATED);
+        return $this->json([
+            'message' => 'Message envoyé',
+            'topic' => $creatTopic,
+            'messsage' => $messageContent,
+        ], 200);  
+
+
 
     }
+
+
+
+
 
 }

@@ -38,8 +38,6 @@ class UserController extends AbstractController
 
         $user->setUsername($username)
              ->setPassword($passwordHasher->hashPassword($user, $password));
-
-        // dd($user);
         
         $entityManager->persist($user);
         $entityManager->flush();
@@ -93,8 +91,6 @@ class UserController extends AbstractController
                 'id' => $user->getId()
             ],$appSecret,'HS256');
 
-            // dd($user);
-
             return $this->json([
                 // 'jwt'=> $jwtHelper->createJWT($user),
                 'jwt' => $jwtForLogin,
@@ -116,9 +112,7 @@ class UserController extends AbstractController
     #[Route('/user-list', name: 'user_list', methods: 'GET')]
     public function userList(UserRepository $userRepository): JsonResponse
     {
-        // $user = $this->getUser();
-        // dd($user);
-        // dd($this->getUser());
+
         return $this->json([
             'users' => $userRepository->findAllButMe($this->getUser())
         ], 200, [], ['groups' => 'main']);

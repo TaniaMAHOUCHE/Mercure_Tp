@@ -13,11 +13,9 @@ main div#chat-zone {
 section#sidebar {
     height: 100%;
     width: 30%;
-    background-color: #4682B4;
 }
 
 section#conversation {
-    /* background-color: rgb(246, 175, 216); */
     height: 100%;
     width: 100%;
 }
