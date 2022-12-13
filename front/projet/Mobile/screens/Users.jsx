@@ -5,7 +5,7 @@ import { AsyncStorage } from 'react-native';
 
 const Users = () => {
 
-    const user = "John Doe";
+    const user = "User Name";
 
     return (
         <UserContext.Provider value={user}>

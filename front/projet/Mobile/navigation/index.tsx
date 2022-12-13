@@ -45,7 +45,7 @@ function RootNavigator() {
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="Login" component={Login} options={{ title: 'Connexion' }}/>
       <Stack.Screen name="Register" component={Register} options={{ title: 'Inscription' }}/>
-      <Stack.Screen path="/user/:id" component={Conversation} options={{ title: 'Conversation' }}/>
+      {/* <Stack.Screen path="/user/:id" component={Conversation} options={{ title: 'Conversation' }}/> */}
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
@@ -74,7 +74,7 @@ function BottomTabNavigator() {
         component={TabTwoScreen}
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
         }}
       />
       <BottomTab.Screen
@@ -82,17 +82,17 @@ function BottomTabNavigator() {
         component={Users}
         options={{
           title: 'Utilisateurs',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="users" color={color} />,
         }}
       />
-      {/* <BottomTab.Screen
-        name="/user/:id"
+      <BottomTab.Screen
+        name="Conversation"
         component={Conversation}
         options={{
           title: 'Conversation',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="stack-exchange" color={color} />,
         }}
-      /> */}
+      />
     </BottomTab.Navigator>
   );
 }

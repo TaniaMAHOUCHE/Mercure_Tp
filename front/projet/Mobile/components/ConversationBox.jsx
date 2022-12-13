@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",  
-    backgroundColor:"red"
+    backgroundColor:"lightgrey"
   },
   headerConversation : {
     margin: 0,
@@ -78,7 +78,6 @@ console.log(titleName);
             <View>
                   <TouchableOpacity id="send-chat" onPress={handleClick} ></TouchableOpacity>
             </View>
-            <Text>Hiya</Text>
          </View>
       </View> 
     </View>

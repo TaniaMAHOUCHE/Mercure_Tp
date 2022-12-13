@@ -19,8 +19,9 @@ const Home = () => {
 
   const logOut = () => {
     AsyncStorage.removeItem('jwt');
-    setUser("");
+    setUser(null);
   }
+
 
   const styles = StyleSheet.create({
     userList: {
